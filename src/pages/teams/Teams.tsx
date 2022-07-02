@@ -1,31 +1,18 @@
 import React, { useEffect, useState } from "react"
-import axios from "axios"
-
-interface Team {
-    name: string
-    points: number
-    division: string
-}
+import { useGoldCupApi, Team} from "../../hooks"
+import { TeamRow } from "./components"
 
 export const Teams = () => {
-    const [teams, setTeams] = useState<Team[] >([])
+    const { getAllTeams} = useGoldCupApi()
+    const [teams, setTeams] = useState<Team[]>([])
 
     useEffect(() => {
-        console.log('in useEffect')
-        axios.get("https://73c3-69-157-231-85.ngrok.io/teams", {
-        })
-            .then(res => setTeams(res.data))
-    }, [])
-
-    console.log(teams)
+        getAllTeams().then(res => setTeams(res.data))
+    }, [getAllTeams])
 
     const teamsList = teams.length ? (
         teams.map(team => (
-            <tr>
-                <td>{team.name}</td>
-                <td>{team.points}</td>
-                <td>{team.division}</td>
-            </tr>
+           <TeamRow team={team} key={team.id} />
         )
     )) : null
 
