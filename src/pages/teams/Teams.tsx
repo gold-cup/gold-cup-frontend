@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react"
 import { Table } from "react-bootstrap"
 import { useGoldCupApi, Team} from "../../hooks"
@@ -9,7 +10,7 @@ export const Teams = () => {
 
     useEffect(() => {
         getAllTeams().then(res => setTeams(res.data))
-    }, [getAllTeams])
+    }, [])
 
     const teamsList = teams.length ? (
         teams.map(team => (
