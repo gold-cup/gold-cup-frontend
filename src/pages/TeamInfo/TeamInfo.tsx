@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 import {useGoldCupApi, Team} from '../../hooks';
+import './TeamInfo.css'
 
 export interface Props {
     teamId: number;
@@ -17,12 +19,15 @@ export const TeamInfo = () => {
     }, [])
 
     const markup = team ? (
+        <>
+        <Link to="/teams">All Teams</Link>
         <h1>{team.name}</h1>
+        </>
     ) : null
 
     return (
-        <>
+        <div className='pageContainer'>
        {markup}
-       </>
+       </div>
     )
 }
