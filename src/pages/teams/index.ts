@@ -1,1 +1,1 @@
-export {Teams} from "./Teams"
+export {Teams} from "./Teams";
