@@ -1,10 +1,16 @@
 import React from 'react';
-import './App.css';
 import {Teams, Home, TeamInfo} from './pages'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import { Navigation } from './components';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container } from 'react-bootstrap';
 
 function App() {
   return (
+    <>
+    <Navigation />
+    <Container>
     <BrowserRouter>
       <Routes>
       <Route path="/teams/:id" element={<TeamInfo />} />
@@ -12,6 +18,8 @@ function App() {
       <Route path="/" element={<Home />} />
     </Routes>
     </BrowserRouter>
+    </Container>
+</>
   );
 }
 

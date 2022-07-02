@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { Table } from "react-bootstrap"
 import { useGoldCupApi, Team} from "../../hooks"
 import { TeamRow } from "./components"
 
@@ -19,7 +20,7 @@ export const Teams = () => {
     return (
         <>
         <h1>Teams</h1>
-        <table className="table">
+        <Table striped bordered hover variant="dark">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -30,7 +31,7 @@ export const Teams = () => {
             <tbody>
                 {teamsList}
             </tbody>
-        </table>
+        </Table>
         </>
     )
 }
