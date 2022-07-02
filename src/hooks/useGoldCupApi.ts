@@ -10,12 +10,17 @@ export interface Team {
 
 export const useGoldCupApi = () => {
     const [teams, setTeams] = React.useState<Team[]>([]);
-    const domain = 'https://73c3-69-157-231-85.ngrok.io';
+    const domain = 'https://eeb3-69-157-231-85.ngrok.io';
     const getAllTeams = async () => {
         const res = await axios.get(`${domain}/teams`)
         setTeams(res.data);
         return res;
     }
 
-    return {teams, getAllTeams};
+    const getTeamById = async(id: number) => {
+        const res = await axios.get(`${domain}/teams/${id}`)
+        return res;
+    }
+
+    return {teams, getAllTeams, getTeamById};
 }
