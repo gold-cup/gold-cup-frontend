@@ -6,6 +6,14 @@ export interface Team {
     name: string
     points: number
     division: string
+    players: Player[]
+}
+
+export interface Player {
+    id: number;
+    name: string
+    position: string
+    number: number
 }
 
 export const useGoldCupApi = () => {
