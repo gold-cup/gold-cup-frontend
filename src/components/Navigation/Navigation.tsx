@@ -11,6 +11,7 @@ export const Navigation = () => {
             <Nav className="me-auto">
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/teams">Teams</Nav.Link>
+                <Nav.Link href="/register">Register</Nav.Link>
             </Nav>
             </Navbar.Collapse>
         </Container>
