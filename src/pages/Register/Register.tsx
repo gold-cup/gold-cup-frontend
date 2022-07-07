@@ -1,5 +1,7 @@
 import React, { ChangeEvent, FormEventHandler } from 'react'
-import { Button, Form, Stack } from 'react-bootstrap'
+import { Alert, Button, Form, Stack } from 'react-bootstrap'
+import { useGoldCupApi } from '../../hooks'
+import { RegistrationErrors } from '../../hooks/useGoldCupApi'
 
 export const Register = () => {
     const [name, setName] = React.useState('')
@@ -10,8 +12,9 @@ export const Register = () => {
     const [passwordValid, setPasswordValid] = React.useState(true)
     const [emailValid, setEmailValid] = React.useState(true)
     const [nameValid, setNameValid] = React.useState(true)
+    const [serverErrors, setServerErrors] = React.useState<RegistrationErrors | null>(null)
+    const {register} = useGoldCupApi()
 
-    // eslint-disable-next-line no-invalid-regexp
     const EMAIL_REGEX = RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 
     const validateForm = () => {
@@ -33,7 +36,7 @@ export const Register = () => {
         return false
     }
 
-    const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
         event.preventDefault()
         const valid = validateForm()
         if (valid) {
@@ -42,12 +45,35 @@ export const Register = () => {
                 email,
                 password,
             }
-            console.log(payload)
+            const res = await register(payload)
+            if (res.data.errors) {
+                setServerErrors(res.data.errors);
+            } else if (res.data.token) {
+                document.cookie = "token=" + res.data.token
+                window.location.href = '/dashboard'
+            }
         }
+    }
+
+    const generateServerBanner = () => {
+        if (serverErrors) {
+            return (
+                <Alert variant="danger">
+                    <Alert.Heading>Looks like we got some errors</Alert.Heading>
+                    <ul>
+                        {serverErrors?.name && <li>Name Errors: {serverErrors.name}</li>}
+                        {serverErrors?.email && <li>Email Errors: {serverErrors.email}</li>}
+                        {serverErrors?.password && <li>Password Errors: {serverErrors.password}</li>}
+                    </ul>
+                </Alert>
+            )
+        }
+        return null
     }
 
     return (
         <>
+        {generateServerBanner()}
         <h1>Register</h1>
         <Form onSubmit={handleSubmit}>
             <Form.Group className='mb-3' controlId='formBasicName'>
