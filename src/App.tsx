@@ -1,5 +1,5 @@
 import React from 'react';
-import {Teams, Home, TeamInfo, Register, Dashboard} from './pages'
+import {Teams, Home, TeamInfo, Register, Dashboard, Login} from './pages'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import { Navigation } from './components';
 
@@ -15,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/login' element={<Login />} />
           <Route path="/teams/:id" element={<TeamInfo />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/" element={<Home />} />
