@@ -37,9 +37,14 @@ export interface LoginErrors {
     error: string
 }
 
+export interface UserDetails {
+    name: string
+    email: string
+}
+
 export const useGoldCupApi = () => {
     const [teams, setTeams] = React.useState<Team[]>([]);
-    const domain = 'https://8044-50-101-201-182.ngrok.io';
+    const domain = 'https://b46c-50-101-201-182.ngrok.io';
     const getAllTeams = async () => {
         const res = await axios.get(`${domain}/teams`)
         setTeams(res.data);
@@ -61,5 +66,12 @@ export const useGoldCupApi = () => {
         return res;
     }
 
-    return {teams, getAllTeams, getTeamById, register, login};
+    const getLoggedInUserDetails = async (token: string) => {
+        const res = await axios.get(`${domain}/user`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    return {teams, getAllTeams, getTeamById, register, login, getLoggedInUserDetails};
 }
