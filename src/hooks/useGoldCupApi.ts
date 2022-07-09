@@ -73,5 +73,20 @@ export const useGoldCupApi = () => {
         return res;
     }
 
-    return {teams, getAllTeams, getTeamById, register, login, getLoggedInUserDetails};
+    const createCookieObject = () => {
+        const cookieObject: {[key: string]: string} = {}
+        document.cookie.split('; ').map((item) => item.split('=')).forEach((item) => {
+            console.log(item[1]);
+            cookieObject[item[0]] = item[1]
+            console.log(cookieObject)
+        })
+        return cookieObject
+    }
+
+    const checkIsLoggedIn = () => {
+        const cookieObject = createCookieObject()
+        return cookieObject.token ? true : false
+    }
+
+    return {teams, getAllTeams, getTeamById, register, login, getLoggedInUserDetails, createCookieObject, checkIsLoggedIn};
 }

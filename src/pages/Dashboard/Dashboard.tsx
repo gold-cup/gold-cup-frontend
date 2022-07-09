@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Card, Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { useGoldCupApi, UserDetails } from '../../hooks'
 
 export const Dashboard = () => {
-    const {getLoggedInUserDetails} = useGoldCupApi()
+    const {getLoggedInUserDetails, createCookieObject} = useGoldCupApi()
     const [userDetails, setUserDetails] = useState<UserDetails | null>(null)
-    const createCookieObject = () => {
-        const cookieObject: {[key: string]: string} = {}
-        document.cookie.split('; ').map((item) => item.split('=')).forEach((item) => {
-            console.log(item[1]);
-            cookieObject[item[0]] = item[1]
-            console.log(cookieObject)
-        })
-        return cookieObject
-    }
+
 
     useEffect(() => {
         const getUserDetails = async () => {
@@ -32,17 +24,46 @@ export const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const logout = () => {
-        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        window.location.href = '/login'
-    }
-
-
     return (
         <>
-            <h1>Dashboard</h1>
-            {userDetails && <p>Welcome {userDetails.name}</p>}
-            <Button onClick={logout}>Logout</Button>
+        <Row>
+            <Col>
+            <h1>Welcome, {userDetails?.name}</h1>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                <Tabs
+                    defaultActiveKey="player-management"
+                    id="uncontrolled-tab-example"
+                    className="mb-3"
+                >
+                    <Tab eventKey="player-management" title="Player Management">
+                        <h3>Player Management</h3>
+                        <p>Here is where you can register yourself or others to be players in gold cup.</p>
+                        <Row>
+                            <Col>
+                            <Card>Player 1</Card>
+                            </Col>
+                            <Col>
+                            <Card>Player 1</Card>
+                            </Col>
+                            <Col>
+                            <Card>Player 1</Card>
+                            </Col>
+                        </Row>
+                    </Tab>
+                    <Tab eventKey="coach-management" title="Coach Management">
+                        <h3>Coach Management</h3>
+                        <p>Here is where you can register yourself or others to be coaches in gold cup.</p>
+                    </Tab>
+                    <Tab eventKey="team-management" title="Team Management">
+                        <h3>Team Management</h3>
+                        <p>Here is where you can create teams for Gold Cup</p>
+                    </Tab>
+                </Tabs>
+            </Col>
+        </Row>
         </>
     )
 }
