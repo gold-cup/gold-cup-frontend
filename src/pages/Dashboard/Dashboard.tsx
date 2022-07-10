@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { useGoldCupApi, UserDetails } from '../../hooks'
+import { PersonManagement, TeamManagement } from './components'
 
 export const Dashboard = () => {
     const {getLoggedInUserDetails, createCookieObject} = useGoldCupApi()
@@ -38,6 +39,9 @@ export const Dashboard = () => {
                     id="uncontrolled-tab-example"
                     className="mb-3"
                 >
+                    <Tab eventKey="personal-info" title="Personal Information">
+                        <PersonManagement />
+                    </Tab>
                     <Tab eventKey="player-management" title="Player Management">
                         <h3>Player Management</h3>
                         <p>Here is where you can register yourself or others to be players in gold cup.</p>
@@ -58,8 +62,7 @@ export const Dashboard = () => {
                         <p>Here is where you can register yourself or others to be coaches in gold cup.</p>
                     </Tab>
                     <Tab eventKey="team-management" title="Team Management">
-                        <h3>Team Management</h3>
-                        <p>Here is where you can create teams for Gold Cup</p>
+                        <TeamManagement />
                     </Tab>
                 </Tabs>
             </Col>

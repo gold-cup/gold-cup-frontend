@@ -44,7 +44,7 @@ export interface UserDetails {
 
 export const useGoldCupApi = () => {
     const [teams, setTeams] = React.useState<Team[]>([]);
-    const domain = 'https://b46c-50-101-201-182.ngrok.io';
+    const domain = 'https://6edd-50-101-201-182.ngrok.io';
     const getAllTeams = async () => {
         const res = await axios.get(`${domain}/teams`)
         setTeams(res.data);
@@ -88,5 +88,12 @@ export const useGoldCupApi = () => {
         return cookieObject.token ? true : false
     }
 
-    return {teams, getAllTeams, getTeamById, register, login, getLoggedInUserDetails, createCookieObject, checkIsLoggedIn};
+    const getPeople = async (token: string) => {
+        const res = await axios.get(`${domain}/people`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    return {teams, getAllTeams, getTeamById, register, login, getLoggedInUserDetails, createCookieObject, checkIsLoggedIn, getPeople};
 }
