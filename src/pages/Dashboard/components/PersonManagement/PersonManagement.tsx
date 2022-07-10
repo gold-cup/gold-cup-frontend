@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Row, Stack } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
 import { useGoldCupApi } from '../../../../hooks';
 
 export const PersonManagement = () => {
     const {createCookieObject, getPeople} = useGoldCupApi()
     const [people, setPeople] = useState<any[]>([])
-
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -31,7 +32,7 @@ export const PersonManagement = () => {
         <>
             <Stack direction='horizontal' gap={3}>
                     <h3>People Management</h3>
-                    <Button className='ms-auto'>Add New</Button>
+                    <Button className='ms-auto' onClick={() => navigate("../new-person")}>Add New</Button>
             </Stack>
             <p>This is where you can view and edit the people attached to this account. Before you can register as a coach or player, you must add a personal record.</p>
             {markup}
