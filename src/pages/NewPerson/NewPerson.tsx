@@ -9,7 +9,8 @@ export const NewPerson = () => {
     const [waiver, setWaiver] = useState<File | null>(null)
     const [photo, setPhoto] = useState<File | null>(null)
     const [govId, setGovId] = useState<File | null>(null)
-    const [errors, setErrors] = useState<string[]>([])
+    const [clientErrors, setClientErrors] = useState<string[]>([])
+    const [serverErrors, setServerErrors] = useState<{[key: string]: string}>({})
     const {newPerson, createCookieObject} = useGoldCupApi()
 
     const getAge = (dateString: string) => {
@@ -23,7 +24,18 @@ export const NewPerson = () => {
         return age;
     }
 
-    const validateForm = (firstName: string, lastName: string, email: string, birthday: string, parentEmail: string, gender: string, city: string, country: string, province: string) => {
+    const validateForm = (
+        firstName: string,
+        lastName: string,
+        email: string,
+        birthday: string,
+        parentEmail: string,
+        gender: string,
+        city: string,
+        country: string,
+        province: string,
+        phoneNumber: string
+        ) => {
         const errors: string[] = []
         // We neeed to validate the following:
         // 1. Waiver is a pdf
@@ -41,7 +53,7 @@ export const NewPerson = () => {
         if (govIdFileType !== 'image') {
             errors.push('Government ID must be an image')
         }
-        // 4. First Name, Last Name, Birthday, Gender, City, Province, email and Country are not empty
+        // 4. First Name, Last Name, Birthday, Gender, City, Province, email and Country, Phone Number are not empty
         if (firstName === '') {
             errors.push('No first name provided')
         }
@@ -66,6 +78,9 @@ export const NewPerson = () => {
         if (email === '') {
             errors.push('No email provided')
         }
+        if (phoneNumber === '') {
+            errors.push('No phone number provided')
+        }
         // 5. If birthday is less than 13 years old, make sure parentEmail is not empty
         console.log(getAge(birthday))
         if (getAge(birthday) < 13) {
@@ -89,20 +104,22 @@ export const NewPerson = () => {
         const city = formTarget.city.value
         const province = formTarget.province.value
         const country = formTarget.country.value
+        const phoneNumber = formTarget.phoneNumber.value
 
-        const errors = validateForm(firstName, lastName, email, birthday, parentEmail, gender, city, country, province)
+        const errors = validateForm(firstName, lastName, email, birthday, parentEmail, gender, city, country, province, phoneNumber)
         if (errors.length === 0) {
             const formData = new FormData()
-            formData.append('firstName', firstName)
-            formData.append('middleName', middleName)
-            formData.append('lastName', lastName)
+            formData.append('first_name', firstName)
+            formData.append('middle_name', middleName)
+            formData.append('last_name', lastName)
             formData.append('email', email)
             formData.append('birthday', birthday)
             formData.append('gender', gender)
-            formData.append('parentEmail', parentEmail)
+            formData.append('parent_email', parentEmail)
             formData.append('city', city)
             formData.append('province', province)
             formData.append('country', country)
+            formData.append('phone_number', phoneNumber)
             if (waiver) {
                 formData.append('waiver', waiver)
             }
@@ -116,22 +133,48 @@ export const NewPerson = () => {
             const cookies = createCookieObject()
             if (cookies.token) {
                 const res = await newPerson(formData, cookies.token)
+                if (res.data.errors) {
+                    setServerErrors(res.data.errors)
+                }
                 if (res.data) {
                     console.log(res.data)
                 }
             }
         } else {
-            setErrors(errors)
+            setClientErrors(errors)
         }
     }
 
+    const clientErrorsMarkup = clientErrors.map((error, index) => {
+        return <li key={index}>{error}</li>
+    })
+
+    const serverErrorsMarkup = () => {
+        const keys = Object.keys(serverErrors)
+        console.log(keys)
+        const keyObj = keys.map((key, index) => {return {[key]: serverErrors[key]}})
+        return keyObj.map((item, index) => {
+            return <li key={index}>{Object.keys(item)[0]}: {Object.values(item).join(',')}</li>
+        })
+    }
+
+    const clearErrors = () => {
+        setClientErrors([])
+        setServerErrors({})
+    }
+
+    const innerErrorMarkup = (
+        <>
+            {clientErrorsMarkup}
+            {serverErrorsMarkup()}
+        </>
+    )
+
     const errorMarkup = (
-        <Alert variant="danger" show={errors.length > 0} onClose={() => setErrors([])} dismissible>
+        <Alert variant="danger" show={clientErrors.length > 0 || Object.keys(serverErrors).length > 0} onClose={clearErrors} dismissible>
             <Alert.Heading>Looks like we got some errors</Alert.Heading>
             <ul>
-                {errors.map((error, index) => {
-                    return <li key={index}>{error}</li>
-                })}
+                {innerErrorMarkup}
             </ul>
         </Alert>
 
@@ -198,6 +241,12 @@ export const NewPerson = () => {
                                 <Form.Label>Parent Email</Form.Label>
                                 <Form.Control type="text" placeholder="Parent Email" name='parentEmail'/>
                                 <Form.Text>This is only applicable if you are under 13</Form.Text>
+                            </Form.Group>
+                            </Col>
+                            <Col md>
+                            <Form.Group controlId="formBasicPhoneNumber">
+                                <Form.Label>Phone Number</Form.Label>
+                                <Form.Control type="tel" name='phoneNumber'/>
                             </Form.Group>
                             </Col>
                         </Row>
