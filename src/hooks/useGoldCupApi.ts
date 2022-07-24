@@ -44,7 +44,7 @@ export interface UserDetails {
 
 export const useGoldCupApi = () => {
     const [teams, setTeams] = React.useState<Team[]>([]);
-    const domain = 'https://6edd-50-101-201-182.ngrok.io';
+    const domain = 'http://127.0.0.1:3000';
     const getAllTeams = async () => {
         const res = await axios.get(`${domain}/teams`)
         setTeams(res.data);
@@ -67,10 +67,16 @@ export const useGoldCupApi = () => {
     }
 
     const getLoggedInUserDetails = async (token: string) => {
-        const res = await axios.get(`${domain}/user`, {
-            headers: {Authorization: `bearer ${token}`}
-        })
-        return res;
+        try {
+            const res = await axios.get(`${domain}/user`, {
+                headers: {Authorization: `bearer ${token}`}
+            })
+            return res;
+        } catch (error) {
+            console.log(error);
+            return {data: {name: '', email: ''}};
+        }
+
     }
 
     const createCookieObject = () => {
@@ -95,5 +101,12 @@ export const useGoldCupApi = () => {
         return res;
     }
 
-    return {teams, getAllTeams, getTeamById, register, login, getLoggedInUserDetails, createCookieObject, checkIsLoggedIn, getPeople};
+    const newPerson = async (payload: FormData, token: string) => {
+        const res = await axios.post(`${domain}/person/new`, payload, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    return {teams, getAllTeams, getTeamById, register, login, getLoggedInUserDetails, createCookieObject, checkIsLoggedIn, getPeople, newPerson};
 }

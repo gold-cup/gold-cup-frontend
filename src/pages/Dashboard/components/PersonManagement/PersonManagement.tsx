@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Row, Stack } from 'react-bootstrap';
+import { Button, Row, Stack } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import { useGoldCupApi } from '../../../../hooks';
 
@@ -20,6 +20,7 @@ export const PersonManagement = () => {
             }
         }
         getPeopleDetails()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -34,7 +35,9 @@ export const PersonManagement = () => {
                     <h3>People Management</h3>
                     <Button className='ms-auto' onClick={() => navigate("../new-person")}>Add New</Button>
             </Stack>
+            <Row>
             <p>This is where you can view and edit the people attached to this account. Before you can register as a coach or player, you must add a personal record.</p>
+            </Row>
             {markup}
         </>
     )

@@ -46,13 +46,13 @@ export const Dashboard = () => {
                         <h3>Player Management</h3>
                         <p>Here is where you can register yourself or others to be players in gold cup.</p>
                         <Row>
-                            <Col>
+                            <Col md={4}>
                             <Card>Player 1</Card>
                             </Col>
-                            <Col>
+                            <Col md={4}>
                             <Card>Player 1</Card>
                             </Col>
-                            <Col>
+                            <Col md={4}>
                             <Card>Player 1</Card>
                             </Col>
                         </Row>
