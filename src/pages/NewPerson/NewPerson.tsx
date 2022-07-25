@@ -126,7 +126,7 @@ export const NewPerson = () => {
                 formData.append('photo', photo)
             }
             if (govId) {
-                formData.append('govId', govId)
+                formData.append('gov_id', govId)
             }
 
             const cookies = createCookieObject()

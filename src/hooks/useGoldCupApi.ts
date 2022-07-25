@@ -46,7 +46,7 @@ const getAPIDomain = () => {
     const env = process.env.NODE_ENV;
     switch(env) {
         case "development":
-            return 'http://127.0.0.1:3000';
+            return 'http://0.0.0.0:3000';
         default:
             return 'https://gold-cup.herokuapp.com';
     };
@@ -115,5 +115,24 @@ export const useGoldCupApi = () => {
         return res;
     }
 
-    return {teams, getAllTeams, getTeamById, register, login, getLoggedInUserDetails, createCookieObject, checkIsLoggedIn, getPeople, newPerson};
+    const deletePerson = async (id: number, token: string) => {
+        const res = await axios.delete(`${domain}/person/${id}`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    return {
+        teams,
+        getAllTeams,
+        getTeamById,
+        register,
+        login,
+        getLoggedInUserDetails,
+        createCookieObject,
+        checkIsLoggedIn,
+        getPeople,
+        newPerson,
+        deletePerson
+    };
 }
