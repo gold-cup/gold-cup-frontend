@@ -42,9 +42,19 @@ export interface UserDetails {
     email: string
 }
 
+const getAPIDomain = () => {
+    const env = process.env.NODE_ENV;
+    switch(env) {
+        case "development":
+            return 'http://127.0.0.1:3000';
+        default:
+            return 'https://gold-cup.herokuapp.com';
+    };
+}
+
 export const useGoldCupApi = () => {
     const [teams, setTeams] = React.useState<Team[]>([]);
-    const domain = 'http://127.0.0.1:3000';
+    const domain = getAPIDomain();
     const getAllTeams = async () => {
         const res = await axios.get(`${domain}/teams`)
         setTeams(res.data);
