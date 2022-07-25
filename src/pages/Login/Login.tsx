@@ -15,11 +15,11 @@ export const Login = () => {
             password,
         }
         const res = await login(payload)
-        console.log(res)
         if (res.data.error) {
             setError(res.data.error)
         } else if (res.data.token) {
-            document.cookie = "token=" + res.data.token
+            const expiry = new Date(Date.now() + (4 * 60 * 60 * 1000))
+            document.cookie = "token=" + res.data.token + ";path=/; expires=" + expiry.toUTCString()
             window.location.href = '/dashboard'
         } else {
             setError('Unknown error')

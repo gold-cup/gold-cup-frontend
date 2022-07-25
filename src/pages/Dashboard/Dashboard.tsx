@@ -15,6 +15,7 @@ export const Dashboard = () => {
                 setUserDetails({name: res.data.name, email: res.data.email})
             }
         }
+
         const cookies = createCookieObject()
         const token = cookies.token
         if (!token) {
@@ -35,7 +36,7 @@ export const Dashboard = () => {
         <Row>
             <Col>
                 <Tabs
-                    defaultActiveKey="player-management"
+                    defaultActiveKey="personal-info"
                     id="uncontrolled-tab-example"
                     className="mb-3"
                 >

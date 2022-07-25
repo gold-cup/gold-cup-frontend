@@ -73,7 +73,6 @@ export const useGoldCupApi = () => {
             })
             return res;
         } catch (error) {
-            console.log(error);
             return {data: {name: '', email: ''}};
         }
 
@@ -82,9 +81,7 @@ export const useGoldCupApi = () => {
     const createCookieObject = () => {
         const cookieObject: {[key: string]: string} = {}
         document.cookie.split('; ').map((item) => item.split('=')).forEach((item) => {
-            console.log(item[1]);
             cookieObject[item[0]] = item[1]
-            console.log(cookieObject)
         })
         return cookieObject
     }

@@ -82,7 +82,6 @@ export const NewPerson = () => {
             errors.push('No phone number provided')
         }
         // 5. If birthday is less than 13 years old, make sure parentEmail is not empty
-        console.log(getAge(birthday))
         if (getAge(birthday) < 13) {
             if (parentEmail === '') {
                 errors.push('Parent email is required')
@@ -135,9 +134,8 @@ export const NewPerson = () => {
                 const res = await newPerson(formData, cookies.token)
                 if (res.data.errors) {
                     setServerErrors(res.data.errors)
-                }
-                if (res.data) {
-                    console.log(res.data)
+                } else {
+                    window.location.href = '/dashboard'
                 }
             }
         } else {
@@ -151,7 +149,6 @@ export const NewPerson = () => {
 
     const serverErrorsMarkup = () => {
         const keys = Object.keys(serverErrors)
-        console.log(keys)
         const keyObj = keys.map((key, index) => {return {[key]: serverErrors[key]}})
         return keyObj.map((item, index) => {
             return <li key={index}>{Object.keys(item)[0]}: {Object.values(item).join(',')}</li>
