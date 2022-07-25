@@ -49,7 +49,7 @@ export const PersonManagement = () => {
                                     <Card.Text>Status: {person.status}</Card.Text>
                                     <ButtonGroup>
                                         <Button variant="primary" onClick={() => navigate(`/dashboard/people/${person.id}`)}>View</Button>
-                                        <Button variant="secondary" onClick={() => navigate(`/dashboard/people/${person.id}`)}>Edit</Button>
+                                        <Button variant="secondary" onClick={() => navigate(`/person/${person.id}`)}>Edit</Button>
                                         <Button variant="danger" onClick={() => setShowDeleteModal(true)}>Delete</Button>
                                     </ButtonGroup>
                                 </Card.Body>
