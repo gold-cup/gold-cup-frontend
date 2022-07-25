@@ -131,6 +131,7 @@ export const Register = () => {
                 Submit
             </Button>
             <Button onClick={() => setShowPassword(!showPassword)} variant='secondary'>Show Passwords</Button>
+            <a href='/login'>Already have an account?</a>
             </Stack>
         </Form>
         </>

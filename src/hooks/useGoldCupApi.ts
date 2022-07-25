@@ -28,6 +28,15 @@ export interface RegistrationErrors {
     password?: string[]
 }
 
+export interface LoginBody {
+    email: string
+    password: string
+}
+
+export interface LoginErrors {
+    error: string
+}
+
 export const useGoldCupApi = () => {
     const [teams, setTeams] = React.useState<Team[]>([]);
     const domain = 'https://8044-50-101-201-182.ngrok.io';
@@ -47,5 +56,10 @@ export const useGoldCupApi = () => {
         return res;
     }
 
-    return {teams, getAllTeams, getTeamById, register};
+    const login = async(payload: LoginBody) => {
+        const res = await axios.post(`${domain}/login`, payload)
+        return res;
+    }
+
+    return {teams, getAllTeams, getTeamById, register, login};
 }
