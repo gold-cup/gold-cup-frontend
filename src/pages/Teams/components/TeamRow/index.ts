@@ -1,1 +1,1 @@
-export {TeamRow} from './TeamRow';
+export * from './TeamRow';
