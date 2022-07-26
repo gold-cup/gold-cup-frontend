@@ -10,11 +10,13 @@ export interface Props {
 }
 
 export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) => {
-    const {createCookieObject, newPerson, domain, updatePerson} = useGoldCupApi()
+    const {createCookieObject, newPerson, updatePerson, getFile} = useGoldCupApi()
     const [waiver, setWaiver] = useState<File | null>(null)
     const [photo, setPhoto] = useState<File | null>(null)
     const [govId, setGovId] = useState<File | null>(null)
-    const [token, setToken] = useState<string>("")
+    const [waiverUrl, setWaiverUrl] = useState<string>('')
+    const [photoUrl, setPhotoUrl] = useState<string>('')
+    const [govIdUrl, setGovIdUrl] = useState<string>('')
 
     const getAge = (dateString: string) => {
         const today = new Date();
@@ -152,12 +154,18 @@ export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) =>
     }
 
     useEffect(() => {
-        const cookieObject = createCookieObject()
-        if (cookieObject.token) {
-            setToken(cookieObject.token)
+        const handleGetFile = async (type: string) => {
+            const url = await getFile(person!.id, type)
+            return url
+        }
+        if (person) {
+
+            handleGetFile('waiver').then(url => setWaiverUrl(url || ''))
+            handleGetFile('photo').then(url => setPhotoUrl(url || ''))
+            handleGetFile('gov_id').then(url => setGovIdUrl(url || ''))
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [person])
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -248,21 +256,21 @@ export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) =>
             <Form.Group controlId="formBasicWaiver">
                 <Form.Label>Waiver</Form.Label>
                 <Form.Control type="file" name="waiver" onChange={(e: any) => setWaiver(e.target.files[0])}/>
-                {person && <Form.Text><a href={`${domain}/person/${person.id}/files?type=waiver&token=${token}`} target="blank">Download Current Waiver</a></Form.Text>}
+                {person && <Form.Text><a href={waiverUrl} target="blank">Download Current Waiver</a></Form.Text>}
             </Form.Group>
             </Col>
             <Col md>
             <Form.Group controlId="formBasicPhoto">
                 <Form.Label>Photo</Form.Label>
                 <Form.Control type="file" onChange={(e: any) => setPhoto(e.target.files[0])} />
-                {person && <Form.Text><a href={`${domain}/person/${person.id}/files?type=photo&token=${token}`} target="blank">Download Current Photo</a></Form.Text>}
+                {person && <Form.Text><a href={photoUrl} target="blank">Download Current Photo</a></Form.Text>}
             </Form.Group>
             </Col>
             <Col md>
             <Form.Group controlId="formBasicID">
                 <Form.Label>Government Identification</Form.Label>
                 <Form.Control type="file" onChange={(e: any) => setGovId(e.target.files[0])}/>
-                {person && <Form.Text><a href={`${domain}/person/${person.id}/files?type=gov_id&token=${token}`} target="blank">Download Current ID</a></Form.Text>}
+                {person && <Form.Text><a href={govIdUrl} target="blank">Download Current ID</a></Form.Text>}
             </Form.Group>
             </Col>
         </Row>

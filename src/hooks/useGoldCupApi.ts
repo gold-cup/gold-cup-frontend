@@ -155,6 +155,16 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const getFile = async (id: number, type: string) => {
+        const payload = {user_id: id, type: type}
+        const res =  await axios.post(`${domain}/files/token`, payload)
+        if (res.data.token) {
+            return `${domain}/files/get?token=${res.data.token}`
+        } else {
+            return null
+        }
+    }
+
     return {
         teams,
         domain,
@@ -170,5 +180,6 @@ export const useGoldCupApi = () => {
         deletePerson,
         updatePerson,
         getPerson,
+        getFile
     };
 }
