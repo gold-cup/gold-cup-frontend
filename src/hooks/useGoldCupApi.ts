@@ -42,6 +42,25 @@ export interface UserDetails {
     email: string
 }
 
+export interface Person {
+    id: number,
+	first_name: string,
+	last_name: string,
+	middle_name: string | null,
+    birthday: string,
+	email: string,
+	gender: string,
+	city: string,
+	province: string,
+	country: string,
+	phone_number: string,
+	created_at: string,
+	updated_at: string,
+	status: string,
+	parent_email: string | null,
+	user_id: number
+}
+
 const getAPIDomain = () => {
     const env = process.env.NODE_ENV;
     switch(env) {
@@ -108,6 +127,13 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const getPerson = async (token: string, id: number) => {
+        const res = await axios.get(`${domain}/person/${id}`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     const newPerson = async (payload: FormData, token: string) => {
         const res = await axios.post(`${domain}/person/new`, payload, {
             headers: {Authorization: `bearer ${token}`}
@@ -122,8 +148,16 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const updatePerson = async (id: number, payload: FormData, token: string) => {
+        const res = await axios.put(`${domain}/person/${id}`, payload, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     return {
         teams,
+        domain,
         getAllTeams,
         getTeamById,
         register,
@@ -133,6 +167,8 @@ export const useGoldCupApi = () => {
         checkIsLoggedIn,
         getPeople,
         newPerson,
-        deletePerson
+        deletePerson,
+        updatePerson,
+        getPerson,
     };
 }
