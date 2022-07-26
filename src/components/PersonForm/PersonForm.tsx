@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Form, Row, Col, Button } from "react-bootstrap"
+import { Form, Row, Col, Button, Stack } from "react-bootstrap"
 import { useGoldCupApi, Person } from "../../hooks"
 
 
@@ -43,17 +43,17 @@ export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) =>
         // We neeed to validate the following:
         // 1. Waiver is a pdf
         const waiverFileType = waiver?.type.split('/')[1]
-        if (waiverFileType !== 'pdf') {
+        if (waiverFileType !== 'pdf' && !person) {
             errors.push('Waiver must be a pdf')
         }
         // 2. Photo is an image
         const photoFileType = photo?.type.split('/')[0]
-        if (photoFileType !== 'image') {
+        if (photoFileType !== 'image' && !person) {
             errors.push('Photo must be an image')
         }
         // 3. GovId is an image
         const govIdFileType = govId?.type.split('/')[0]
-        if (govIdFileType !== 'image') {
+        if (govIdFileType !== 'image' && !person) {
             errors.push('Government ID must be an image')
         }
         // 4. First Name, Last Name, Birthday, Gender, City, Province, email and Country, Phone Number are not empty
@@ -266,7 +266,10 @@ export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) =>
             </Form.Group>
             </Col>
         </Row>
+        <Stack direction="horizontal" gap={3}>
         <Button type='submit' variant="primary" className='btn-top'>Submit</Button>
+        <Button variant="secondary" className='btn-top' onClick={() => window.location.href = '/dashboard'}>Cancel</Button>
+        </Stack>
 </Form>
     )
 }

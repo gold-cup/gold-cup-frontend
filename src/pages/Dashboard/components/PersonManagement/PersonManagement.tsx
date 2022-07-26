@@ -14,7 +14,6 @@ export const PersonManagement = () => {
         if (cookies.token) {
             const res = await getPeople(cookies.token)
             if (res.data) {
-                console.log(res.data)
                 setPeople(res.data)
             }
         }
@@ -48,8 +47,7 @@ export const PersonManagement = () => {
                                     <Card.Title>{name}</Card.Title>
                                     <Card.Text>Status: {person.status}</Card.Text>
                                     <ButtonGroup>
-                                        <Button variant="primary" onClick={() => navigate(`/dashboard/people/${person.id}`)}>View</Button>
-                                        <Button variant="secondary" onClick={() => navigate(`/person/${person.id}`)}>Edit</Button>
+                                        <Button variant="primary" onClick={() => navigate(`/person/${person.id}`)}>View/Edit</Button>
                                         <Button variant="danger" onClick={() => setShowDeleteModal(true)}>Delete</Button>
                                     </ButtonGroup>
                                 </Card.Body>
