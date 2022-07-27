@@ -1,9 +1,23 @@
 import React from 'react'
 import { Button, Col, Modal, Row } from 'react-bootstrap';
+import { useGoldCupApi } from '../../../../hooks';
 
-export const TeamManagement = () => {
-    const isTeamManager = false;
+export interface Props {
+    permission: string
+}
+
+export const TeamManagement = ({permission}: Props) => {
     const [showModal, setShowModal] = React.useState(false);
+    const {requestTeamManagerPermissions, createCookieObject} = useGoldCupApi();
+
+    const handleRequestTeamManagerPermission = async () => {
+        const cookies = createCookieObject();
+        const res = await requestTeamManagerPermissions(cookies.token);
+        if (res.data) {
+            setShowModal(false);
+            window.location.reload()
+        }
+    }
 
     const modal = (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
@@ -20,13 +34,13 @@ export const TeamManagement = () => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
-                <Button variant="primary" onClick={() => setShowModal(false)}>Register</Button>
+                <Button variant="primary" onClick={() => handleRequestTeamManagerPermission()}>Register</Button>
             </Modal.Footer>
         </Modal>
     )
 
-    const teamManagementMarkup = isTeamManager ?
-        null :
+    const teamManagementMarkup = permission !== 'user' && permission !== '' ?
+        <p>You have permission to manage teams</p> :
         <div>
             <Row>
                 <p>Currently you are not a Team Manager.

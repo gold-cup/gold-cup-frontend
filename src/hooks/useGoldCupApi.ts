@@ -40,6 +40,7 @@ export interface LoginErrors {
 export interface UserDetails {
     name: string
     email: string
+    permission: string | null
 }
 
 export interface Person {
@@ -148,6 +149,13 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const requestTeamManagerPermissions = async (token: string) => {
+        const res = await axios.post(`${domain}/user/request_team_manager_permissions`, {}, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     const updatePerson = async (id: number, payload: FormData, token: string) => {
         const res = await axios.put(`${domain}/person/${id}`, payload, {
             headers: {Authorization: `bearer ${token}`}
@@ -180,6 +188,7 @@ export const useGoldCupApi = () => {
         deletePerson,
         updatePerson,
         getPerson,
-        getFile
+        getFile,
+        requestTeamManagerPermissions,
     };
 }
