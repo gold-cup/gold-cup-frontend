@@ -1,5 +1,5 @@
 import React from 'react';
-import {Teams, Home, TeamInfo, Register, Dashboard, Login, NewPerson} from './pages'
+import {Teams, Home, TeamInfo, Register, Dashboard, Login, NewPerson, PersonEdit} from './pages'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import { Navigation } from './components';
 
@@ -17,6 +17,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/person/:id' element={<PersonEdit />} />
           <Route path='/new-person' element={<NewPerson />} />
           <Route path="/teams/:id" element={<TeamInfo />} />
           <Route path="/teams" element={<Teams />} />

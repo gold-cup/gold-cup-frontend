@@ -42,11 +42,30 @@ export interface UserDetails {
     email: string
 }
 
+export interface Person {
+    id: number,
+	first_name: string,
+	last_name: string,
+	middle_name: string | null,
+    birthday: string,
+	email: string,
+	gender: string,
+	city: string,
+	province: string,
+	country: string,
+	phone_number: string,
+	created_at: string,
+	updated_at: string,
+	status: string,
+	parent_email: string | null,
+	user_id: number
+}
+
 const getAPIDomain = () => {
     const env = process.env.NODE_ENV;
     switch(env) {
         case "development":
-            return 'http://127.0.0.1:3000';
+            return 'http://0.0.0.0:3000';
         default:
             return 'https://gold-cup.herokuapp.com';
     };
@@ -108,6 +127,13 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const getPerson = async (token: string, id: number) => {
+        const res = await axios.get(`${domain}/person/${id}`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     const newPerson = async (payload: FormData, token: string) => {
         const res = await axios.post(`${domain}/person/new`, payload, {
             headers: {Authorization: `bearer ${token}`}
@@ -115,5 +141,45 @@ export const useGoldCupApi = () => {
         return res;
     }
 
-    return {teams, getAllTeams, getTeamById, register, login, getLoggedInUserDetails, createCookieObject, checkIsLoggedIn, getPeople, newPerson};
+    const deletePerson = async (id: number, token: string) => {
+        const res = await axios.delete(`${domain}/person/${id}`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const updatePerson = async (id: number, payload: FormData, token: string) => {
+        const res = await axios.put(`${domain}/person/${id}`, payload, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const getFile = async (id: number, type: string) => {
+        const payload = {user_id: id, type: type}
+        const res =  await axios.post(`${domain}/files/token`, payload)
+        if (res.data.token) {
+            return `${domain}/files/get?token=${res.data.token}`
+        } else {
+            return null
+        }
+    }
+
+    return {
+        teams,
+        domain,
+        getAllTeams,
+        getTeamById,
+        register,
+        login,
+        getLoggedInUserDetails,
+        createCookieObject,
+        checkIsLoggedIn,
+        getPeople,
+        newPerson,
+        deletePerson,
+        updatePerson,
+        getPerson,
+        getFile
+    };
 }
