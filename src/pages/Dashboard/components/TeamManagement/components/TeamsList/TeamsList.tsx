@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Stack } from "react-bootstrap";
+import { Button, Card, Col, Stack, Row } from "react-bootstrap";
 import { useGoldCupApi } from "../../../../../../hooks";
 
 export const TeamsList = () => {
@@ -49,7 +49,7 @@ export const TeamsList = () => {
                     </Col>
                 )
             })
-            return rowItems
+            return (<Row>{rowItems}</Row>)
         }
     }
 

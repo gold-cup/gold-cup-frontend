@@ -193,6 +193,13 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const newTeam = async (token: string, payload: Object) => {
+        const res = await axios.post(`${domain}/team/new`, payload, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     return {
         teams,
         domain,
@@ -211,6 +218,7 @@ export const useGoldCupApi = () => {
         getFile,
         requestTeamManagerPermissions,
         getManagedTeams,
-        deleteTeam
+        deleteTeam,
+        newTeam
     };
 }
