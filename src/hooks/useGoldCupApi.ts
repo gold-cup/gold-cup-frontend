@@ -180,6 +180,13 @@ export const useGoldCupApi = () => {
         }
     }
 
+    const deleteTeam = async (token: string, id: number) => {
+        const res = await axios.delete(`${domain}/team/${id}`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     return {
         teams,
         domain,
@@ -197,6 +204,7 @@ export const useGoldCupApi = () => {
         getPerson,
         getFile,
         requestTeamManagerPermissions,
-        getManagedTeams
+        getManagedTeams,
+        deleteTeam
     };
 }
