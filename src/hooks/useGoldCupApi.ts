@@ -62,6 +62,12 @@ export interface Person {
 	user_id: number
 }
 
+export const TeamDivisions: {[key: string]: string} = {
+    B99: "Boys 12-14",
+    G99: "Girls 12-4",
+    MO: "Mens Open"
+}
+
 const getAPIDomain = () => {
     const env = process.env.NODE_ENV;
     switch(env) {
