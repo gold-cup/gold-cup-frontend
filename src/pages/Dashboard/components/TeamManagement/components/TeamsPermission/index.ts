@@ -1,0 +1,1 @@
+export {TeamsPermission} from './TeamsPermission';
