@@ -163,6 +163,13 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const getManagedTeams = async (token: string) => {
+        const res = await axios.get(`${domain}/teams`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     const getFile = async (id: number, type: string) => {
         const payload = {user_id: id, type: type}
         const res =  await axios.post(`${domain}/files/token`, payload)
@@ -190,5 +197,6 @@ export const useGoldCupApi = () => {
         getPerson,
         getFile,
         requestTeamManagerPermissions,
+        getManagedTeams
     };
 }
