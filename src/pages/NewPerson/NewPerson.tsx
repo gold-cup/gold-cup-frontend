@@ -4,10 +4,12 @@ import { Alert, Row } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './NewPerson.css'
 import { PersonForm } from '../../components';
+import { Person } from '../../hooks';
 
 export const NewPerson = () => {
     const [clientErrors, setClientErrors] = useState<string[]>([])
     const [serverErrors, setServerErrors] = useState<{[key: string]: string}>({})
+    const [person, setPerson] = useState<Person | null>(null)
 
     const clientErrorsMarkup = clientErrors.map((error, index) => {
         return <li key={index}>{error}</li>
@@ -53,7 +55,12 @@ export const NewPerson = () => {
                 <h3>Person Details</h3>
             </Row>
             <Row>
-                <PersonForm setClientErrors={setClientErrors} setServerErrors={setServerErrors} />
+                <PersonForm
+                    person={person || undefined}
+                    setClientErrors={setClientErrors}
+                    setServerErrors={setServerErrors}
+                    setPerson={setPerson}
+                />
             </Row>
         </>
     )

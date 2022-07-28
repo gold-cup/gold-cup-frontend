@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { Form, Row, Col, Button, Stack } from "react-bootstrap"
 import { useGoldCupApi, Person } from "../../hooks"
 
 
 export interface Props {
     person?: Person
+    setPerson?: (person: Person) => void
     setClientErrors: (errors: string[]) => void
     setServerErrors: (errors: {[key: string]: string}) => void
+    edit?: boolean
 }
 
-export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) => {
+export const PersonForm = ({person, setServerErrors, setClientErrors, setPerson, edit}: Props) => {
     const {createCookieObject, newPerson, updatePerson, getFile} = useGoldCupApi()
     const [waiver, setWaiver] = useState<File | null>(null)
     const [photo, setPhoto] = useState<File | null>(null)
@@ -137,8 +139,8 @@ export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) =>
             const cookies = createCookieObject()
             if (cookies.token) {
                 let res: any
-                if (person) {
-                    res = await updatePerson(person.id, formData, cookies.token)
+                if (edit) {
+                    res = await updatePerson(person!.id, formData, cookies.token)
                 } else {
                     res = await newPerson(formData, cookies.token)
                 }
@@ -150,6 +152,30 @@ export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) =>
             }
         } else {
             setClientErrors(errors)
+        }
+    }
+
+    const handleTeamChange = (e: ChangeEvent<any>, field: string) => {
+        if (person && setPerson) {
+            setPerson({...person!, [field]: e.target.value})
+        } else if (setPerson){
+            const emptyPerson = {
+                id: 0,
+                first_name: '',
+                middle_name: '',
+                last_name: '',
+                email: '',
+                birthday: '',
+                parent_email: '',
+                city: '',
+                province: '',
+                country: '',
+                phone_number: '',
+                gender: '',
+                status: '',
+                user_id: 0
+            }
+            setPerson({...emptyPerson, [field]: e.target.value})
         }
     }
 
@@ -173,19 +199,37 @@ export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) =>
             <Col md>
                 <Form.Group controlId="formBasicFirstName">
                     <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" placeholder="First Name" name='firstName' value={person?.first_name}/>
+                    <Form.Control
+                        type="text"
+                        placeholder="First Name"
+                        name='firstName'
+                        value={person?.first_name}
+                        onChange={(e: ChangeEvent<any>) => handleTeamChange(e, 'first_name')}
+                    />
                 </Form.Group>
             </Col>
             <Col md>
             <Form.Group controlId="formBasicMiddleName">
                 <Form.Label>Middle Name</Form.Label>
-                <Form.Control type="text" placeholder="Middle Name" name='middleName' value={person?.middle_name || undefined}/>
+                <Form.Control
+                    type="text"
+                    placeholder="Middle Name"
+                    name='middleName'
+                    value={person?.middle_name || undefined}
+                    onChange={(e: ChangeEvent<any>) => handleTeamChange(e, 'middle_name')}
+                />
             </Form.Group>
             </Col>
             <Col md>
             <Form.Group controlId="formBasicLastName">
                 <Form.Label>Last Name</Form.Label>
-                <Form.Control type="text" placeholder="Last Name" name='lastName' value={person?.last_name} />
+                <Form.Control
+                    type="text"
+                    placeholder="Last Name"
+                    name='lastName'
+                    value={person?.last_name}
+                    onChange={(e: ChangeEvent<any>) => handleTeamChange(e, 'last_name')}
+                />
             </Form.Group>
             </Col>
         </Row>
@@ -193,13 +237,23 @@ export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) =>
             <Col md>
             <Form.Group controlId="formBasicBirthday">
                 <Form.Label>Birthday</Form.Label>
-                <Form.Control type="date" placeholder="Birthday" name='birthday' value={person?.birthday} />
+                <Form.Control
+                    type="date"
+                    placeholder="Birthday"
+                    name='birthday'
+                    value={person?.birthday}
+                    onChange={(e: ChangeEvent<any>) => handleTeamChange(e, 'birthday')}
+                />
             </Form.Group>
             </Col>
             <Col md>
             <Form.Group controlId="formBasicGender">
                 <Form.Label>Gender</Form.Label>
-                <Form.Select name='gender' value={person?.gender}>
+                <Form.Select
+                    name='gender'
+                    value={person?.gender}
+                    onChange={(e: ChangeEvent<any>) => handleTeamChange(e, 'gender')}
+                >
                     <option>Select</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -211,20 +265,37 @@ export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) =>
             <Col md>
             <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="text" placeholder="Email" name='email' value={person?.email}/>
+                <Form.Control
+                    type="text"
+                    placeholder="Email"
+                    name='email'
+                    value={person?.email}
+                    onChange={(e: ChangeEvent<any>) => handleTeamChange(e, 'email')}
+                />
             </Form.Group>
             </Col>
             <Col md>
             <Form.Group controlId="formBasicParentEmail">
                 <Form.Label>Parent Email</Form.Label>
-                <Form.Control type="text" placeholder="Parent Email" name='parentEmail' value={person?.parent_email || undefined}/>
+                <Form.Control
+                    type="text"
+                    placeholder="Parent Email"
+                    name='parentEmail'
+                    value={person?.parent_email || undefined}
+                    onChange={(e: ChangeEvent<any>) => handleTeamChange(e, 'parent_email')}
+                />
                 <Form.Text>This is only applicable if you are under 13</Form.Text>
             </Form.Group>
             </Col>
             <Col md>
             <Form.Group controlId="formBasicPhoneNumber">
                 <Form.Label>Phone Number</Form.Label>
-                <Form.Control type="tel" name='phoneNumber' value={person?.phone_number}/>
+                <Form.Control
+                    type="tel"
+                    name='phoneNumber'
+                    value={person?.phone_number}
+                    onChange={(e: ChangeEvent<any>) => handleTeamChange(e, 'phone_number')}
+                />
             </Form.Group>
             </Col>
         </Row>
@@ -232,19 +303,37 @@ export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) =>
             <Col md>
             <Form.Group controlId="formBasicCity">
                 <Form.Label>City</Form.Label>
-                <Form.Control type="text" placeholder="City" name='city' value={person?.city} />
+                <Form.Control
+                    type="text"
+                    placeholder="City"
+                    name='city'
+                    value={person?.city}
+                    onChange={(e: ChangeEvent<any>) => handleTeamChange(e, 'city')}
+                />
             </Form.Group>
             </Col>
             <Col md>
             <Form.Group controlId="formBasicProvince">
                 <Form.Label>Province</Form.Label>
-                <Form.Control type="text" placeholder="Province" name='province' value={person?.province} />
+                <Form.Control
+                    type="text"
+                    placeholder="Province"
+                    name='province'
+                    value={person?.province}
+                    onChange={(e: ChangeEvent<any>) => handleTeamChange(e, 'province')}
+                />
             </Form.Group>
             </Col>
             <Col md>
             <Form.Group controlId="formBasicCountry">
                 <Form.Label>Country</Form.Label>
-                <Form.Control type="text" placeholder="Country" name='country' value={person?.country} />
+                <Form.Control
+                    type="text"
+                    placeholder="Country"
+                    name='country'
+                    value={person?.country}
+                    onChange={(e: ChangeEvent<any>) => handleTeamChange(e, 'country')}
+                />
             </Form.Group>
             </Col>
         </Row>
@@ -256,21 +345,21 @@ export const PersonForm = ({person, setServerErrors, setClientErrors}: Props) =>
             <Form.Group controlId="formBasicWaiver">
                 <Form.Label>Waiver</Form.Label>
                 <Form.Control type="file" name="waiver" onChange={(e: any) => setWaiver(e.target.files[0])}/>
-                {person && <Form.Text><a href={waiverUrl} target="blank">Download Current Waiver</a></Form.Text>}
+                {edit && <Form.Text><a href={waiverUrl} target="blank">Download Current Waiver</a></Form.Text>}
             </Form.Group>
             </Col>
             <Col md>
             <Form.Group controlId="formBasicPhoto">
                 <Form.Label>Photo</Form.Label>
                 <Form.Control type="file" onChange={(e: any) => setPhoto(e.target.files[0])} />
-                {person && <Form.Text><a href={photoUrl} target="blank">Download Current Photo</a></Form.Text>}
+                {edit && <Form.Text><a href={photoUrl} target="blank">Download Current Photo</a></Form.Text>}
             </Form.Group>
             </Col>
             <Col md>
             <Form.Group controlId="formBasicID">
                 <Form.Label>Government Identification</Form.Label>
                 <Form.Control type="file" onChange={(e: any) => setGovId(e.target.files[0])}/>
-                {person && <Form.Text><a href={govIdUrl} target="blank">Download Current ID</a></Form.Text>}
+                {edit && <Form.Text><a href={govIdUrl} target="blank">Download Current ID</a></Form.Text>}
             </Form.Group>
             </Col>
         </Row>

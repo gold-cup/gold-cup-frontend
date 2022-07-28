@@ -72,7 +72,13 @@ export const PersonEdit = () => {
             <h3>Person Details</h3>
         </Row>
         <Row>
-            <PersonForm person={person || undefined} setClientErrors={setClientErrors} setServerErrors={setServerErrors} />
+            <PersonForm
+                person={person || undefined}
+                setClientErrors={setClientErrors}
+                setServerErrors={setServerErrors}
+                setPerson={setPerson}
+                edit
+            />
         </Row>
     </>
     )
