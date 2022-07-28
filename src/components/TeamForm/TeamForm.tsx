@@ -43,7 +43,8 @@ export const TeamForm = ({team, setTeam}: Props) => {
                 name: "",
                 points: 0,
                 division: "",
-                players: []
+                players: [],
+                password: "",
             }
             setTeam({
                 ...emptyTeam,

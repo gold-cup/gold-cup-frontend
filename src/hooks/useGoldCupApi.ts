@@ -59,7 +59,8 @@ export interface Team {
     name: string,
     points: number,
     division: string,
-    players: Player[]
+    players: Player[],
+    password: string,
 }
 
 export const TeamDivisions: {[key: string]: string} = {

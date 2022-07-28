@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Row, Table } from 'react-bootstrap';
+import { Col, Form, Row, Table } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import {useGoldCupApi, Team} from '../../hooks';
@@ -30,7 +30,13 @@ export const TeamInfo = () => {
             <h1>{team.name}</h1>
         </Row>
         <Row>
+            <Col md>
             <h3>Division: {team.division}</h3>
+            </Col>
+            <Col md>
+            <h6>Password</h6 >
+            <Form.Control type="text" placeholder="Password" value={team.password} />
+            </Col>
         </Row>
         <Row>
             <Col md>
