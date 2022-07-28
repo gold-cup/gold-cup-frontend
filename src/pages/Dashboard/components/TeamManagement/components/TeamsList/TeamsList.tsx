@@ -46,7 +46,7 @@ export const TeamsList = () => {
                                 </Stack>
                             </Card.Body>
                             <Card.Footer>
-                                <Card.Link onClick={() => navigate(`/dashboard/people/${team.id}`)}>View</Card.Link>
+                                <Card.Link onClick={() => navigate(`/team/${team.id}`)}>View</Card.Link>
                                 <Card.Link onClick={() => navigate(`/team/${team.id}/edit`)}>Edit</Card.Link>
                                 <Card.Link className="link-danger" onClick={() => handleDelete(team.id)}>Delete</Card.Link>
                             </Card.Footer>

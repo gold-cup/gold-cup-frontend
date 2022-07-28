@@ -87,8 +87,10 @@ export const useGoldCupApi = () => {
         return res;
     }
 
-    const getTeamById = async(id: number) => {
-        const res = await axios.get(`${domain}/teams/${id}`)
+    const getTeamById = async(id: number, token: string) => {
+        const res = await axios.get(`${domain}/teams/${id}`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
         return res;
     }
 

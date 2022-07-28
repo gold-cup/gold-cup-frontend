@@ -19,7 +19,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/person/:id' element={<PersonEdit />} />
           <Route path='/new-person' element={<NewPerson />} />
-          <Route path="/teams/:id" element={<TeamInfo />} />
+          <Route path="/team/:id" element={<TeamInfo />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/new-team" element={<NewTeam />} />
           <Route path="/team/:id/edit" element={<TeamEdit />} />
