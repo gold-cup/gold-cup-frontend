@@ -1,14 +1,6 @@
 import React from "react";
 import axios from "axios";
 
-export interface Team {
-    id: number;
-    name: string
-    points: number
-    division: string
-    players: Player[]
-}
-
 export interface Player {
     id: number;
     name: string
@@ -40,6 +32,7 @@ export interface LoginErrors {
 export interface UserDetails {
     name: string
     email: string
+    permission: string | null
 }
 
 export interface Person {
@@ -61,6 +54,21 @@ export interface Person {
 	user_id: number
 }
 
+export interface Team {
+    id: number,
+    name: string,
+    points: number,
+    division: string,
+    players: Player[],
+    password: string,
+}
+
+export const TeamDivisions: {[key: string]: string} = {
+    B99: "Boys 12-14",
+    G99: "Girls 12-4",
+    MO: "Mens Open"
+}
+
 const getAPIDomain = () => {
     const env = process.env.NODE_ENV;
     switch(env) {
@@ -80,8 +88,10 @@ export const useGoldCupApi = () => {
         return res;
     }
 
-    const getTeamById = async(id: number) => {
-        const res = await axios.get(`${domain}/teams/${id}`)
+    const getTeamById = async(id: number, token: string) => {
+        const res = await axios.get(`${domain}/teams/${id}`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
         return res;
     }
 
@@ -148,8 +158,22 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const requestTeamManagerPermissions = async (token: string) => {
+        const res = await axios.post(`${domain}/user/request_team_manager_permissions`, {}, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     const updatePerson = async (id: number, payload: FormData, token: string) => {
         const res = await axios.put(`${domain}/person/${id}`, payload, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const getManagedTeams = async (token: string) => {
+        const res = await axios.get(`${domain}/teams`, {
             headers: {Authorization: `bearer ${token}`}
         })
         return res;
@@ -163,6 +187,34 @@ export const useGoldCupApi = () => {
         } else {
             return null
         }
+    }
+
+    const deleteTeam = async (token: string, id: number) => {
+        const res = await axios.delete(`${domain}/team/${id}`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const newTeam = async (token: string, payload: Object) => {
+        const res = await axios.post(`${domain}/team/new`, payload, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const getTeam = async (token: string, id: number) => {
+        const res = await axios.get(`${domain}/teams/${id}`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const updateTeam = async (token: string, id: number, payload: Object) => {
+        const res = await axios.put(`${domain}/teams/${id}`, payload, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
     }
 
     return {
@@ -180,6 +232,12 @@ export const useGoldCupApi = () => {
         deletePerson,
         updatePerson,
         getPerson,
-        getFile
+        getFile,
+        requestTeamManagerPermissions,
+        getManagedTeams,
+        deleteTeam,
+        newTeam,
+        getTeam,
+        updateTeam
     };
 }

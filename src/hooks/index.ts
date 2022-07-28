@@ -1,3 +1,3 @@
-export { useGoldCupApi } from "./useGoldCupApi";
+export { useGoldCupApi, TeamDivisions } from "./useGoldCupApi";
 export type { Team, Player, UserDetails, Person } from "./useGoldCupApi";
 

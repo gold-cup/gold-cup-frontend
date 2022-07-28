@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Row, Table } from 'react-bootstrap';
+import { Col, Form, Row, Table } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import {useGoldCupApi, Team} from '../../hooks';
@@ -13,19 +13,33 @@ export interface Props {
 export const TeamInfo = () => {
     const {id} = useParams()
     const [team, setTeam] = useState<Team | null>()
-    const {getTeamById} = useGoldCupApi()
+    const {getTeamById, createCookieObject} = useGoldCupApi()
 
     useEffect(() => {
-        getTeamById(Number(id)).then((res: { data: Team; }) => setTeam(res.data))
+        const cookieObject = createCookieObject()
+        if (cookieObject.token) {
+            getTeamById(Number(id), cookieObject.token).then((res: { data: Team; }) => setTeam(res.data))
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const markup = team ? (
         <>
-        <Link to="/teams">All Teams</Link>
-        <h1>{team.name}</h1>
+        <Link to="/dashboard?tab=team-management">All Teams</Link>
         <Row>
-            <Col>
+            <h1>{team.name}</h1>
+        </Row>
+        <Row>
+            <Col md>
+            <h3>Division: {team.division}</h3>
+            </Col>
+            <Col md>
+            <h6>Password</h6 >
+            <Form.Control type="text" placeholder="Password" value={team.password} />
+            </Col>
+        </Row>
+        <Row>
+            <Col md>
             <h2>Players</h2>
             <Table striped bordered hover variant="dark">
                 <thead>
@@ -33,6 +47,7 @@ export const TeamInfo = () => {
                         <th>Number</th>
                         <th>Name</th>
                         <th>Position</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,6 +56,17 @@ export const TeamInfo = () => {
                     ))}
                 </tbody>
             </Table>
+            </Col>
+            <Col md>
+                <h2>Coaches</h2>
+                <Table striped bordered hover variant="dark">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </Table>
             </Col>
         </Row>
         </>
