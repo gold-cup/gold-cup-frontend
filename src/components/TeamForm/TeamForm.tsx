@@ -1,8 +1,14 @@
+import { ChangeEvent } from "react"
 import { Button, Col, Form, Row, Stack } from "react-bootstrap"
-import { TeamDivisions, useGoldCupApi } from "../../hooks"
+import { TeamDivisions, useGoldCupApi, Team } from "../../hooks"
 
-export const TeamForm = () => {
-    const {createCookieObject, newTeam} = useGoldCupApi()
+export interface Props {
+    team?: Team
+    setTeam?: (team: Team) => void
+}
+
+export const TeamForm = ({team, setTeam}: Props) => {
+    const {createCookieObject, newTeam, updateTeam} = useGoldCupApi()
     const options = Object.keys(TeamDivisions).map((division) => {
         return <option key={division} value={division}>{TeamDivisions[division]}</option>
     })
@@ -15,10 +21,34 @@ export const TeamForm = () => {
         const payload = {name: teamName, division: teamDivision}
         const cookie = createCookieObject()
         if (cookie.token) {
-            const res = await newTeam(cookie.token, payload)
+            let res;
+            if (window.location.pathname.includes('edit')) {
+                res = await updateTeam(cookie.token, team!.id, payload)
+            } else {
+                res = await newTeam(cookie.token, payload)
+            }
             if (res.status === 200) {
                 window.location.href = "/dashboard?tab=team-management"
             }
+        }
+    }
+
+    const handleTeamChange = (e: ChangeEvent<any>, field: string) => {
+        console.log(team)
+        if (team && setTeam) {
+            setTeam({...team!, [field]: e.target.value})
+        } else if (setTeam) {
+            const emptyTeam = {
+                id: 0,
+                name: "",
+                points: 0,
+                division: "",
+                players: []
+            }
+            setTeam({
+                ...emptyTeam,
+                [field]: e.target.value,
+            })
         }
     }
 
@@ -28,13 +58,19 @@ export const TeamForm = () => {
                 <Col md={8}>
                     <Form.Group controlId="formBasicTeamName">
                         <Form.Label>Team Name</Form.Label>
-                        <Form.Control type="text" placeholder="Team Name" name='teamName' />
+                        <Form.Control type="text"
+                            placeholder="Team Name"
+                            name='teamName' value={team?.name || ''}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => handleTeamChange(e, 'name')} />
                     </Form.Group>
                 </Col>
                 <Col md={4}>
                     <Form.Group controlId="formBasicDivision">
                         <Form.Label>Division</Form.Label>
-                        <Form.Select name='division'>
+                        <Form.Select name='division'
+                            value={team?.division}
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => handleTeamChange(e, 'division')}
+                        >
                             <option>Select</option>
                             {options}
                         </Form.Select>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Teams, Home, TeamInfo, Register, Dashboard, Login, NewPerson, PersonEdit, NewTeam} from './pages'
+import {Teams, Home, TeamInfo, Register, Dashboard, Login, NewPerson, PersonEdit, NewTeam, TeamEdit} from './pages'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import { Navigation } from './components';
 
@@ -22,6 +22,7 @@ function App() {
           <Route path="/teams/:id" element={<TeamInfo />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/new-team" element={<NewTeam />} />
+          <Route path="/team/:id/edit" element={<TeamEdit />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </BrowserRouter>

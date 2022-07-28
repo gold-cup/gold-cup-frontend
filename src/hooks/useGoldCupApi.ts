@@ -1,14 +1,6 @@
 import React from "react";
 import axios from "axios";
 
-export interface Team {
-    id: number;
-    name: string
-    points: number
-    division: string
-    players: Player[]
-}
-
 export interface Player {
     id: number;
     name: string
@@ -60,6 +52,14 @@ export interface Person {
 	status: string,
 	parent_email: string | null,
 	user_id: number
+}
+
+export interface Team {
+    id: number,
+    name: string,
+    points: number,
+    division: string,
+    players: Player[]
 }
 
 export const TeamDivisions: {[key: string]: string} = {
@@ -200,6 +200,20 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const getTeam = async (token: string, id: number) => {
+        const res = await axios.get(`${domain}/teams/${id}`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const updateTeam = async (token: string, id: number, payload: Object) => {
+        const res = await axios.put(`${domain}/teams/${id}`, payload, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     return {
         teams,
         domain,
@@ -219,6 +233,8 @@ export const useGoldCupApi = () => {
         requestTeamManagerPermissions,
         getManagedTeams,
         deleteTeam,
-        newTeam
+        newTeam,
+        getTeam,
+        updateTeam
     };
 }

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Stack, Row } from "react-bootstrap";
+import { Card, Col, Stack, Row } from "react-bootstrap";
+import { useNavigate } from "react-router";
 import { useGoldCupApi } from "../../../../../../hooks";
 
 export const TeamsList = () => {
     const {getManagedTeams, createCookieObject, deleteTeam} = useGoldCupApi();
+    const navigate = useNavigate()
     const [teams, setTeams] = useState<any[]>([]);
 
     useEffect(() => {
@@ -40,11 +42,14 @@ export const TeamsList = () => {
                                 <Card.Title>{team.name}</Card.Title>
                                 <Card.Text>Division: {team.division}</Card.Text>
                                 <Stack gap={3} direction='horizontal'>
-                                {/* <Button variant="primary" onClick={() => navigate(`/dashboard/people/${person.id}`)}>View</Button>
-                                <Button variant="primary" onClick={() => navigate(`/dashboard/people/${person.id}`)}>Edit</Button> */}
-                                <Button variant="danger" onClick={() => handleDelete(team.id)}>Delete</Button>
+
                                 </Stack>
                             </Card.Body>
+                            <Card.Footer>
+                                <Card.Link onClick={() => navigate(`/dashboard/people/${team.id}`)}>View</Card.Link>
+                                <Card.Link onClick={() => navigate(`/team/${team.id}/edit`)}>Edit</Card.Link>
+                                <Card.Link className="link-danger" onClick={() => handleDelete(team.id)}>Delete</Card.Link>
+                            </Card.Footer>
                         </Card>
                     </Col>
                 )
