@@ -70,7 +70,7 @@ export const TeamsList = () => {
                 </>
                 )
             })
-            return (<Row>{rowItems}</Row>)
+            return <Row>{rowItems}</Row>
         }
     }
 

@@ -47,8 +47,6 @@ export interface Person {
 	province: string,
 	country: string,
 	phone_number: string,
-	created_at: string,
-	updated_at: string,
 	status: string,
 	parent_email: string | null,
 	user_id: number

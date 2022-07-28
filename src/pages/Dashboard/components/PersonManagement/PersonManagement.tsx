@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Card, Col, Modal, Row, Stack } from 'react-bootstrap';
+import { Button, Card, Col, Modal, Row, Stack } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import { useGoldCupApi } from '../../../../hooks';
 
@@ -46,11 +46,11 @@ export const PersonManagement = () => {
                                 <Card.Body>
                                     <Card.Title>{name}</Card.Title>
                                     <Card.Text>Status: {person.status}</Card.Text>
-                                    <ButtonGroup>
-                                        <Button variant="primary" onClick={() => navigate(`/person/${person.id}`)}>View/Edit</Button>
-                                        <Button variant="danger" onClick={() => setShowDeleteModal(true)}>Delete</Button>
-                                    </ButtonGroup>
                                 </Card.Body>
+                                <Card.Footer>
+                                    <Card.Link onClick={() => navigate(`/person/${person.id}`)}>View/Edit</Card.Link>
+                                    <Card.Link className='link-danger' onClick={() => setShowDeleteModal(true)}>Delete</Card.Link>
+                                </Card.Footer>
                             </Card>
                         </Col>
                         <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
@@ -72,7 +72,7 @@ export const PersonManagement = () => {
                     </>
                 )
             })
-            return rowItems
+            return (<Row>{rowItems}</Row>)
         }
     }
 
