@@ -243,6 +243,14 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const deletePlayer = async (id: number, token: string, person_id: number) => {
+        const res = await axios.delete(`${domain}/player/${id}`, {
+            headers: {Authorization: `bearer ${token}`},
+            data: {id: person_id}
+        })
+        return res;
+    }
+
     return {
         teams,
         domain,
@@ -269,5 +277,6 @@ export const useGoldCupApi = () => {
         getApprovedPlayers,
         getTeamFromToken,
         newPlayer,
+        deletePlayer
     };
 }

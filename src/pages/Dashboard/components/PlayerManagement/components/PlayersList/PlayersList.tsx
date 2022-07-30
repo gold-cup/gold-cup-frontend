@@ -4,9 +4,10 @@ import { useNavigate } from "react-router"
 import { useGoldCupApi, Player } from "../../../../../../hooks"
 
 export const PlayersList = () => {
-    const {createCookieObject, getPlayers} = useGoldCupApi()
+    const {createCookieObject, getPlayers, deletePlayer} = useGoldCupApi()
     const [players, setPlayers] = useState<Player[]>([])
     const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [token, setToken] = useState<string | undefined>(undefined)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -15,12 +16,21 @@ export const PlayersList = () => {
         if (!token) {
             window.location.href = '/login';
             } else {
+                setToken(token)
                 getPlayers(token).then(res => { setPlayers(res.data) })
             }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const handleDelete = (id: number) => {}
+    const handleDelete = async (id: number, person_id: number) => {
+        if (token) {
+            const res = await deletePlayer(id, token, person_id)
+            if (res.status === 200) {
+                setShowDeleteModal(false)
+                getPlayers(token).then(res => { setPlayers(res.data) })
+            }
+        }
+    }
 
     const rowSize = 3
     const createPlayerGrid = () => {
@@ -56,7 +66,7 @@ export const PlayersList = () => {
                             <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
                                 Cancel
                             </Button>
-                            <Button variant="danger" onClick={() => handleDelete(player.id)}>
+                            <Button variant="danger" onClick={() => handleDelete(player.id, player.person.id)}>
                                 Delete
                             </Button>
                         </Modal.Footer>
