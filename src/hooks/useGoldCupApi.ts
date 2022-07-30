@@ -6,6 +6,8 @@ export interface Player {
     name: string
     position: string
     number: number
+    person: Person
+    team: Team
 }
 
 export interface RegistrationBody {

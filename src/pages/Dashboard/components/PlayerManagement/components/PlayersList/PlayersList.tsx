@@ -35,7 +35,7 @@ export const PlayersList = () => {
                     <Col key={index} md={4}>
                         <Card>
                             <Card.Body>
-                                <Card.Title>{player.name}</Card.Title>
+                                <Card.Title>{player.person.first_name} - {player.team.name}</Card.Title>
                                 <Card.Text>Division: {player.position}</Card.Text>
                             </Card.Body>
                             <Card.Footer>
