@@ -41,7 +41,7 @@ export const TeamInfo = () => {
         <Row>
             <Col md>
             <h2>Players</h2>
-            <Table striped bordered hover variant="dark">
+            <Table striped bordered hover>
                 <thead>
                     <tr>
                         <th>Number</th>
@@ -59,7 +59,7 @@ export const TeamInfo = () => {
             </Col>
             <Col md>
                 <h2>Coaches</h2>
-                <Table striped bordered hover variant="dark">
+                <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>Name</th>
