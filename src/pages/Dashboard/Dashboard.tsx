@@ -27,6 +27,8 @@ export const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const activeTab = searchParams.get('tab') || 'personal-info'
+
     return (
         <>
         <Row>
@@ -41,7 +43,7 @@ export const Dashboard = () => {
                     id="uncontrolled-tab-example"
                     className="mb-3"
                     onSelect={(k) => setSearchParams({tab: k || 'person-management'})}
-                    activeKey={searchParams.get('tab') || 'person-management'}
+                    activeKey={activeTab}
                 >
                     <Tab eventKey="personal-info" title="Personal Information">
                         <PersonManagement />
