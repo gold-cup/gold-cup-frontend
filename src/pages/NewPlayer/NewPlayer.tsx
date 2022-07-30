@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
+import { PlayerForm } from "../../components"
 import { Person, useGoldCupApi } from "../../hooks"
 
 export const NewPlayer = () => {
@@ -19,6 +20,7 @@ export const NewPlayer = () => {
     return (
         <>
         <h1>New Player for {person?.first_name}</h1>
+        <PlayerForm />
         </>
     )
 }
