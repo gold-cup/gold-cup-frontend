@@ -222,6 +222,13 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const getApprovedPlayers = async (token: string) => {
+        const res = await axios.get(`${domain}/people/approved`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     return {
         teams,
         domain,
@@ -244,6 +251,7 @@ export const useGoldCupApi = () => {
         newTeam,
         getTeam,
         updateTeam,
-        getPlayers
+        getPlayers,
+        getApprovedPlayers,
     };
 }
