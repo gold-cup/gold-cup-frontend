@@ -1,13 +1,41 @@
 import { ChangeEvent, useState } from "react"
 import { Form, Row, Col, Stack, Button } from "react-bootstrap"
-import { useGoldCupApi, Team } from "../../hooks"
+import { useGoldCupApi, Team, Person } from "../../hooks"
 
-export const PlayerForm = () => {
-    const {getTeamFromToken} = useGoldCupApi()
+interface payload {
+    number: number
+    position: string
+    team_id?: number
+    person_id?: number
+}
+
+export interface Props {
+    person: Person
+}
+
+export const PlayerForm = ({person}: Props) => {
+    const {getTeamFromToken, createCookieObject, newPlayer} = useGoldCupApi()
     const [team, setTeam] = useState<Team | undefined>(undefined)
     const [error, setError] = useState<string | undefined>(undefined)
 
-    const handleSubmit = () => {}
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const formTarget = e.target as HTMLFormElement
+        const number = formTarget.number.value
+        const position = formTarget.position.value
+        const payload: payload = {number: number, position: position, person_id: person.id}
+        if (team) {
+            payload.team_id = team.id
+        }
+        const token = createCookieObject().token
+        if (token) {
+            const res = await newPlayer(token, payload)
+            if (res.status === 201) {
+                window.location.href = "../dashboard?tab=player-management"
+            }
+        }
+    }
+
     const getTeamFromPassword = (password: string) => {
         setError(undefined)
         getTeamFromToken(password)
@@ -54,7 +82,7 @@ export const PlayerForm = () => {
             <Col md={2}>
                 <Form.Group controlId="formBasicNumber">
                     <Form.Label>Number</Form.Label>
-                    <Form.Control type="number" placeholder="Number" min="1" max="99" />
+                    <Form.Control type="number" name='number' placeholder="Number" min="1" max="99" />
                 </Form.Group>
             </Col>
         </Row>

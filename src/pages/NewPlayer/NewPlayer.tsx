@@ -20,7 +20,7 @@ export const NewPlayer = () => {
     return (
         <>
         <h1>New Player for {person?.first_name}</h1>
-        <PlayerForm />
+        {person && <PlayerForm person={person} />}
         </>
     )
 }
