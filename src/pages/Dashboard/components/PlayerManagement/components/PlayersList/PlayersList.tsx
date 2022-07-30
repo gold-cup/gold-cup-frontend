@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react"
 import { Col, Card, Modal, Button, Row } from "react-bootstrap"
-import { useNavigate } from "react-router"
 import { useGoldCupApi, Player } from "../../../../../../hooks"
 
 export const PlayersList = () => {
-    const {createCookieObject, getPlayers, deletePlayer} = useGoldCupApi()
+    const {createCookieObject, getPlayers, deletePlayer, createPersonName} = useGoldCupApi()
     const [players, setPlayers] = useState<Player[]>([])
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [token, setToken] = useState<string | undefined>(undefined)
-    const navigate = useNavigate()
 
     useEffect(() => {
         const cookies = createCookieObject()
@@ -45,12 +43,25 @@ export const PlayersList = () => {
                     <Col key={index} md={4}>
                         <Card>
                             <Card.Body>
-                                <Card.Title>{player.person.first_name} - {player.team.name}</Card.Title>
-                                <Card.Text>Division: {player.position}</Card.Text>
+                                <Card.Title>{createPersonName(player.person)}</Card.Title>
+                                <Row>
+                                    <Col>
+                                        <Card.Text>Team: {player.team.name}</Card.Text>
+                                    </Col>
+                                    <Col>
+                                    <Card.Text>Position: {player.position}</Card.Text>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                    <Card.Text>Division: {player.team.division}</Card.Text>
+                                    </Col>
+                                    <Col>
+                                    <Card.Text>Number: {player.number}</Card.Text>
+                                    </Col>
+                                </Row>
                             </Card.Body>
                             <Card.Footer>
-                                <Card.Link onClick={() => navigate(`/team/${player.id}`)}>View</Card.Link>
-                                <Card.Link onClick={() => navigate(`/team/${player.id}/edit`)}>Edit</Card.Link>
                                 <Card.Link className="link-danger" onClick={() => setShowDeleteModal(true)}>Delete</Card.Link>
                             </Card.Footer>
                         </Card>

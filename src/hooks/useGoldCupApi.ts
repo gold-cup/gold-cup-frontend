@@ -251,6 +251,14 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const createPersonName = (person: Person) => {
+        const nameArray = [person.first_name, person.last_name]
+        if (person.middle_name) {
+            nameArray.splice(1, 0, person.middle_name)
+        }
+        return nameArray.join(' ')
+    }
+
     return {
         teams,
         domain,
@@ -277,6 +285,7 @@ export const useGoldCupApi = () => {
         getApprovedPlayers,
         getTeamFromToken,
         newPlayer,
-        deletePlayer
+        deletePlayer,
+        createPersonName
     };
 }
