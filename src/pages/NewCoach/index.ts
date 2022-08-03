@@ -1,0 +1,1 @@
+export {NewCoach} from './NewCoach';
