@@ -10,6 +10,13 @@ export interface Player {
     team: Team
 }
 
+export interface Coach {
+    id: number;
+    status: string;
+    person: Person;
+    team: Team;
+}
+
 export interface RegistrationBody {
     name: string
     email: string
@@ -259,6 +266,28 @@ export const useGoldCupApi = () => {
         return nameArray.join(' ')
     }
 
+    const createCoach = async (token: string, payload: FormData) => {
+        const res = await axios.post(`${domain}/coaches/new`, payload, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const getCoaches = async (token: string) => {
+        const res = await axios.get(`${domain}/coaches`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const deleteCoach = async (id: number, token: string, person_id: number) => {
+        const res = await axios.delete(`${domain}/coaches/${id}`, {
+            headers: {Authorization: `bearer ${token}`},
+            data: {id: person_id}
+        })
+        return res;
+    }
+
     return {
         teams,
         domain,
@@ -286,6 +315,9 @@ export const useGoldCupApi = () => {
         getTeamFromToken,
         newPlayer,
         deletePlayer,
-        createPersonName
+        createPersonName,
+        createCoach,
+        getCoaches,
+        deleteCoach
     };
 }

@@ -1,5 +1,18 @@
 import React from 'react';
-import {Teams, Home, TeamInfo, Register, Dashboard, Login, NewPerson, PersonEdit, NewTeam, TeamEdit, NewPlayer} from './pages'
+import {
+  Teams,
+  Home,
+  TeamInfo,
+  Register,
+  Dashboard,
+  Login,
+  NewPerson,
+  PersonEdit,
+  NewTeam,
+  TeamEdit,
+  NewPlayer,
+  NewCoach
+} from './pages'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import { Navigation } from './components';
 
@@ -24,6 +37,7 @@ function App() {
           <Route path="/new-team" element={<NewTeam />} />
           <Route path="/team/:id/edit" element={<TeamEdit />} />
           <Route path="/new-player" element={<NewPlayer />} />
+          <Route path="/new-coach" element={<NewCoach />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </BrowserRouter>
