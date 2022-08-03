@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Person, useGoldCupApi } from "../../../../hooks";
+import { CoachList } from "./components";
 
 export const CoachManagement = () => {
     const {createCookieObject, getApprovedPlayers} = useGoldCupApi();
@@ -17,7 +18,7 @@ export const CoachManagement = () => {
     }, [])
 
     const markup = approvedPeople.length ? (
-        <p>You have people</p>
+        <CoachList />
     ) : (
         <p>You don't have any approved people to create coach registrations for yet. We are currently confirming your current participant registrations. To view the current status of your participant registrations, got to <a href="/dashboard?tab=personal-info">Person Management</a></p>
     )
