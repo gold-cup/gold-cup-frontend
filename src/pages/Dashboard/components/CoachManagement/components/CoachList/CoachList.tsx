@@ -1,11 +1,24 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Col, Card, Row, Modal, Button } from "react-bootstrap"
-import { useGoldCupApi } from "../../../../../../hooks"
+import { Coach, useGoldCupApi } from "../../../../../../hooks"
 
 export const CoachList = () => {
-    const [coaches,] = useState<any[]>([])
+    const [coaches, setCoaches] = useState<Coach[]>([])
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const {createPersonName} = useGoldCupApi()
+    const {createPersonName, createCookieObject, getCoaches} = useGoldCupApi()
+    const [,setToken] = useState<string | undefined>(undefined)
+    useEffect(() => {
+        const cookies = createCookieObject()
+        const token = cookies.token
+        if (!token) {
+            window.location.href = '/login';
+            } else {
+                setToken(token)
+                getCoaches(token).then(res => { setCoaches(res.data) })
+            }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     const rowSize = 3
     const createCoachGrid = () => {
         if (coaches.length === 0) {
@@ -29,9 +42,6 @@ export const CoachList = () => {
                                     <Col>
                                     <Card.Text>Division: {coach.team.division}</Card.Text>
                                     </Col>
-                                    <Col>
-                                    <Card.Text>Number: {coach.number}</Card.Text>
-                                    </Col>
                                 </Row>
                             </Card.Body>
                             <Card.Footer>
@@ -44,7 +54,7 @@ export const CoachList = () => {
                             <Modal.Title>Delete Person</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <p>Are you sure you want to delete {coach.name}?</p>
+                            <p>Are you sure you want to delete {coach.person.first_name}?</p>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>

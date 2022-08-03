@@ -10,6 +10,13 @@ export interface Player {
     team: Team
 }
 
+export interface Coach {
+    id: number;
+    status: string;
+    person: Person;
+    team: Team;
+}
+
 export interface RegistrationBody {
     name: string
     email: string
@@ -266,6 +273,13 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const getCoaches = async (token: string) => {
+        const res = await axios.get(`${domain}/coaches`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     return {
         teams,
         domain,
@@ -294,6 +308,7 @@ export const useGoldCupApi = () => {
         newPlayer,
         deletePlayer,
         createPersonName,
-        createCoach
+        createCoach,
+        getCoaches
     };
 }
