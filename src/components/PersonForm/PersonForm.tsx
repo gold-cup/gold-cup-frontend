@@ -184,14 +184,13 @@ export const PersonForm = ({person, setServerErrors, setClientErrors, setPerson,
             const url = await getFile(person!.id, type)
             return url
         }
-        if (person) {
-
+        if (edit && person) {
             handleGetFile('waiver').then(url => setWaiverUrl(url || ''))
             handleGetFile('photo').then(url => setPhotoUrl(url || ''))
             handleGetFile('gov_id').then(url => setGovIdUrl(url || ''))
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [person])
+    }, [])
 
     return (
         <Form onSubmit={handleSubmit}>
