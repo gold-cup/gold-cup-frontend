@@ -259,6 +259,13 @@ export const useGoldCupApi = () => {
         return nameArray.join(' ')
     }
 
+    const createCoach = async (token: string, payload: FormData) => {
+        const res = await axios.post(`${domain}/coaches/new`, payload, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
     return {
         teams,
         domain,
@@ -286,6 +293,7 @@ export const useGoldCupApi = () => {
         getTeamFromToken,
         newPlayer,
         deletePlayer,
-        createPersonName
+        createPersonName,
+        createCoach
     };
 }
