@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { useSearchParams } from 'react-router-dom'
 import { useGoldCupApi, UserDetails } from '../../hooks'
-import { PersonManagement, PlayerManagement, TeamManagement } from './components'
+import { PersonManagement, PlayerManagement, TeamManagement, CoachManagement } from './components'
 
 export const Dashboard = () => {
     const {getLoggedInUserDetails, createCookieObject} = useGoldCupApi()
@@ -52,8 +52,7 @@ export const Dashboard = () => {
                         <PlayerManagement />
                     </Tab>
                     <Tab eventKey="coach-management" title="Coach Management">
-                        <h3>Coach Management</h3>
-                        <p>Here is where you can register yourself or others to be coaches in gold cup.</p>
+                        <CoachManagement />
                     </Tab>
                     <Tab eventKey="team-management" title="Team Management">
                         <TeamManagement permission={userDetails?.permission || ''} />
