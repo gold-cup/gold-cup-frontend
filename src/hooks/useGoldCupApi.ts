@@ -82,7 +82,7 @@ const getAPIDomain = () => {
         case "development":
             return 'http://0.0.0.0:3000';
         default:
-            return 'https://gold-cup.herokuapp.com';
+            return 'https://goldcup-api.nqne47cbf5ov2.ca-central-1.cs.amazonlightsail.com/';
     };
 }
 
