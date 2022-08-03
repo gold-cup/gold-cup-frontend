@@ -6,6 +6,8 @@ export interface Player {
     name: string
     position: string
     number: number
+    person: Person
+    team: Team
 }
 
 export interface RegistrationBody {
@@ -215,6 +217,48 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const getPlayers = async (token: string) => {
+        const res = await axios.get(`${domain}/players`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const getApprovedPlayers = async (token: string) => {
+        const res = await axios.get(`${domain}/people/approved`, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const getTeamFromToken = async (token: string) => {
+        const res = await axios.post(`${domain}/team/token`, {password: token})
+        return res;
+    }
+
+    const newPlayer = async (token: string, payload: Object) => {
+        const res = await axios.post(`${domain}/players/new`, payload, {
+            headers: {Authorization: `bearer ${token}`}
+        })
+        return res;
+    }
+
+    const deletePlayer = async (id: number, token: string, person_id: number) => {
+        const res = await axios.delete(`${domain}/player/${id}`, {
+            headers: {Authorization: `bearer ${token}`},
+            data: {id: person_id}
+        })
+        return res;
+    }
+
+    const createPersonName = (person: Person) => {
+        const nameArray = [person.first_name, person.last_name]
+        if (person.middle_name) {
+            nameArray.splice(1, 0, person.middle_name)
+        }
+        return nameArray.join(' ')
+    }
+
     return {
         teams,
         domain,
@@ -236,6 +280,12 @@ export const useGoldCupApi = () => {
         deleteTeam,
         newTeam,
         getTeam,
-        updateTeam
+        updateTeam,
+        getPlayers,
+        getApprovedPlayers,
+        getTeamFromToken,
+        newPlayer,
+        deletePlayer,
+        createPersonName
     };
 }
