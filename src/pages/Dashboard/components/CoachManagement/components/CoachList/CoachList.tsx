@@ -5,8 +5,8 @@ import { Coach, useGoldCupApi } from "../../../../../../hooks"
 export const CoachList = () => {
     const [coaches, setCoaches] = useState<Coach[]>([])
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const {createPersonName, createCookieObject, getCoaches} = useGoldCupApi()
-    const [,setToken] = useState<string | undefined>(undefined)
+    const {createPersonName, createCookieObject, getCoaches, deleteCoach} = useGoldCupApi()
+    const [token, setToken] = useState<string | undefined>(undefined)
     useEffect(() => {
         const cookies = createCookieObject()
         const token = cookies.token
@@ -18,6 +18,16 @@ export const CoachList = () => {
             }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    const handleDelete = async (id: number, person_id: number) => {
+        if (token) {
+            const res = await deleteCoach(id, token, person_id)
+            if (res.status === 200) {
+                setShowDeleteModal(false)
+                getCoaches(token).then(res => { setCoaches(res.data) })
+            }
+        }
+    }
 
     const rowSize = 3
     const createCoachGrid = () => {
@@ -60,7 +70,7 @@ export const CoachList = () => {
                             <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
                                 Cancel
                             </Button>
-                            <Button variant="danger" onClick={() => {}}>
+                            <Button variant="danger" onClick={() => handleDelete(coach.id, coach.person.id)}>
                                 Delete
                             </Button>
                         </Modal.Footer>

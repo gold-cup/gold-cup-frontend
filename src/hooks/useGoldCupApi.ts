@@ -280,6 +280,14 @@ export const useGoldCupApi = () => {
         return res;
     }
 
+    const deleteCoach = async (id: number, token: string, person_id: number) => {
+        const res = await axios.delete(`${domain}/coaches/${id}`, {
+            headers: {Authorization: `bearer ${token}`},
+            data: {id: person_id}
+        })
+        return res;
+    }
+
     return {
         teams,
         domain,
@@ -309,6 +317,7 @@ export const useGoldCupApi = () => {
         deletePlayer,
         createPersonName,
         createCoach,
-        getCoaches
+        getCoaches,
+        deleteCoach
     };
 }
