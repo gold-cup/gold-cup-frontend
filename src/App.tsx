@@ -18,13 +18,15 @@ import { Navigation } from './components';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import { Container } from 'react-bootstrap';
 
 function App() {
+  console.log(window.location.pathname)
   return (
   <>
     <Navigation />
-    <Container>
+    <div
+      className={window.location.pathname === '/' ? 'background' : 'container'}
+    >
       <BrowserRouter>
         <Routes>
           <Route path="/register" element={<Register />} />
@@ -41,7 +43,7 @@ function App() {
           <Route path="/" element={<Home />} />
         </Routes>
       </BrowserRouter>
-    </Container>
+    </div>
   </>
   );
 }
