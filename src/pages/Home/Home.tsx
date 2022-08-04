@@ -1,11 +1,22 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Col, Row } from 'react-bootstrap'
+import './Home.css'
 
 export const Home = () => {
     return (
         <>
-        <h1>Gold Cup</h1>
-        <Link to="/teams">Teams</Link>
+        <Row>
+        <div className='logo'>
+            <img src="/GC Logo .png" alt="logo" />
+        </div>
+        </Row>
+        <Row>
+            <Col></Col>
+            <Col md='auto'>
+                <h1>Gold Cup</h1>
+            </Col>
+            <Col></Col>
+        </Row>
         </>
     )
 }
