@@ -1,0 +1,24 @@
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo>img {
+    height: 40vh;
+}
+
+.heading {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.subHeading {
+    font-weight: bold;
+    color: #fff;
+}
+
+.formLabel {
+    color: #fff;
+}

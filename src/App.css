@@ -1,3 +1,18 @@
 .row {
     margin-top: 0.25em;
 }
+
+.background {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../public/background-alt-1.jpeg");
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    height: 94vh;
+    margin-top: -0.25em;
+}
+
+@media screen and (max-width: 767px) {
+    .background {
+        height: auto;
+    }
+}
