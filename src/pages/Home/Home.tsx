@@ -14,6 +14,9 @@ export const Home = () => {
         if (res.status !== 200) {
             alert('Something went wrong, please try again. If this persists, please contact us.')
         }
+        else {
+            alert('Success!')
+        }
     }
     return (
         <>
